@@ -1,0 +1,18 @@
+.Github {
+  grid-column: span 2;
+
+  .github-logos {
+    display: flex;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+
+    .github-logo {
+      width: 100px;
+    }
+
+    .octocat {
+      width: 40px;
+    }
+  }
+}

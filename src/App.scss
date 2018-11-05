@@ -1,0 +1,8 @@
+@import url("https://fonts.googleapis.com/css?family=Inconsolata");
+
+.App {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: 1fr 2fr;
+  height: 100vh;
+}

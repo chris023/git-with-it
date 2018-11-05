@@ -1,0 +1,26 @@
+.Terminal {
+  font-family: 'Inconsolata', monospace;
+  
+  display: flex;
+  justify-content: center;
+
+  textarea {
+    resize: none;
+  }
+
+  .gterm-prefix {
+    width:59px;
+    border-right: none;
+  }
+
+  .gterm-input {
+    border-left: none;
+    width:260px;
+  }
+
+  form {
+    display: flex;
+    width: 320px;
+    height: 200px;
+  }
+}
