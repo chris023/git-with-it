@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import Commit from './Commit';
+
 import '../../styles/_visualizer.scss';
 
 class Visualizer extends Component {
@@ -10,20 +12,16 @@ class Visualizer extends Component {
       width: this.props.width,
       height: this.props.height,
     }
-
-    this.state = {
-      displayTree: [],
-    }
   }
 
-  commit(branch) {
-    
-  }
+ 
 
   render() {
     return (
       <div className="Visualizer" style={this.style}>
-
+        {
+          this.props.master.map(commit => Commit.render(commit))
+        }
       </div>
     )
   }

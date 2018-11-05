@@ -10,9 +10,12 @@ class VisualizerBranch {
   }
 
   render() {
-    this.nodes.map((node) => {
-      return node.render();
-    })
+    return (
+      this.nodes.map((node) => {
+        return node.render();
+      })
+    )
+    
   }
 }
 

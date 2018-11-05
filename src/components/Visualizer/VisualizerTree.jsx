@@ -1,8 +1,10 @@
-import VisualizerBranch from './VisualiserBranch';
+import { Component } from 'react';
+import VisualizerBranch from './VisualizerBranch';
 
-class VisualizerTree {
+class VisualizerTree extends Component {
 
-  constructor() {
+  constructor(props) {
+    super(props);
     this.branches = [new VisualizerBranch('master')];
   }
 
@@ -13,9 +15,11 @@ class VisualizerTree {
   }
 
   render() {
-    this.branches.map((branch) => {
-      return branch.render();
-    })
+    return (
+      this.branches.map((branch) => {
+        return branch.render();
+      })
+    )
   }
 }
 

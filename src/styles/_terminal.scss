@@ -1,19 +1,66 @@
 .Terminal {
   font-family: 'Inconsolata', monospace;
-  
   display: flex;
   justify-content: center;
+  position: relative;
 
   textarea {
     resize: none;
+    border: none;
+  }
+
+  .gterm {
+    border: solid 1px black;
+    border-top: solid 15px black;
+    border-radius: 5px;
+    overflow: hidden;
+  }
+
+  .gterm-header {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    
+    & > p {
+      color: white;
+      margin: 0;
+      font-size: 12px;
+      text-align: center;
+    }
+
+    & > .osx-button {
+      width: 8px;
+      height: 8px;
+      position: absolute;
+      background-color: #fff;
+      border-radius: 4px;
+      top: 3px;
+
+      &.one {
+        left: 10px;
+        background-color: rgb(255,14,10);
+      }
+
+      &.two {
+        left: 25px;
+        background-color: rgb(255,214,10);
+      }
+
+      &.three {
+        left: 40px;
+        background-color: rgb(50,215,75);
+      }
+    }
   }
 
   .gterm-prefix {
-    width:59px;
+    padding: 8px;
     border-right: none;
+    width:59px;
   }
 
   .gterm-input {
+    padding: 8px;
     border-left: none;
     width:260px;
   }

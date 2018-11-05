@@ -17,6 +17,11 @@ class Terminal extends Component {
       this.evaluate(lastLine);
 
       this.refs.gtermPrefix.value += 'gterm > ';
+
+      if (lines.length > 13) {
+        const numToRemove = lines.length - 13;
+        
+      }
     }
   }
 
@@ -41,13 +46,14 @@ class Terminal extends Component {
 
     switch (command[1]) {
       case 'commit':
-        this.commit();
+        this.props.commit();
+        this.refs.gtermPrefix.value += 'gterm > ';
         break;
       case 'push':
-        this.push();
+        this.props.push(this.props.master);
         break;
       case 'pull':
-        this.pull();
+        this.props.pull('user' + this.props.user[this.props.user.length - 1]);
         break;
       case 'merge':
         this.merge();
@@ -61,18 +67,6 @@ class Terminal extends Component {
       default:
         this.commandNotFound();
     }
-  }
-
-  commit() {
-
-  }
-
-  push() {
-
-  }
-
-  pull() {
-
   }
 
   merge() {
@@ -104,16 +98,23 @@ help: possible commands:
   }
 
   commandNotFound() {
-    console.log('Command Not Found');
+    this.refs.gtermInput.value += `Command not found. Type 'help' for more options\n`;
+    this.refs.gtermPrefix.value += `\n\n\n`;
   }
 
   render() {
     return (
       <div className="Terminal">
+        <div className="gterm-header">
+          <div className="osx-button one"></div>
+          <div className="osx-button two"></div>
+          <div className="osx-button three"></div>
+          <p>Terminal</p>
+        </div>
         <form className="gterm">
           <textarea
-            className="gterm-prefix"
             ref="gtermPrefix"
+            className="gterm-prefix"
             value="gterm > "
             readOnly>
           </textarea>

@@ -1,0 +1,46 @@
+.Commit {
+  width: 100px;
+  position: relative;
+  flex-shrink: 0;
+
+  .main-commit-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .timestamp {
+    font-size: 12px;
+    text-align: center;
+  }
+
+  .commit-icon {
+    width: 40px;
+    height: auto;
+
+    &.A {
+      border: solid 1px blue;
+    }
+
+    &.B {
+      border: solid 1px green;
+    }
+  }
+
+  .line {
+    &.commits {
+      position: absolute;
+      width: 30px;
+      height: 0;
+      border-bottom: solid 1px black;
+      
+      &.commits.left {
+        left: 0;
+      }
+
+      &.commits.right {
+        right: 0;
+      }
+    }
+  }
+}

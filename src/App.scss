@@ -2,7 +2,25 @@
 
 .App {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(2, 50vw);
   grid-template-rows: 1fr 2fr;
   height: 100vh;
+
+  .reset {
+    position: absolute;
+    top: 20px;
+    right: 40px;
+
+    width: 80px;
+    height: 40px;
+
+    background: none;
+    border: solid 2px black;
+    border-radius: 20px;
+
+    &:hover {
+      cursor: pointer;
+      background: #eee;
+    }
+  }
 }
