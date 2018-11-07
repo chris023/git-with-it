@@ -7,55 +7,61 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      githubCommits: [],
+      githubCommits: {},
     }
   }
 
   reset = () => {
-    
     this.setState({
-      githubCommits: [],
+      githubCommits: {},
     })
     
     const users = ['userA', 'userB'];
     users.forEach(user => {
       this.refs[user].setState({
-        master: [],
+        branches: {
+          master: [],
+        },
       })
       this.refs[user].refs.terminal.refs.gtermPrefix.value = '';
       this.refs[user].refs.terminal.refs.gtermInput.value = '';
     })
   }
 
-  push = (array) => {
+  push = (array, branch) => {
+    
+    const githubCommits = this.state.githubCommits;
+
+    if (!githubCommits[branch]) githubCommits[branch] = [];
+
+    githubCommits[branch] = this.mergeAndSortCommits(githubCommits[branch], array);
+    
     this.setState({
-      githubCommits: this.state.githubCommits
-        .concat(array)
-        .sort((a, b) => a.timeStamp > b.timeStamp)
-        .filter((commit1, pos, a) => {
-          return a.findIndex((commit2) => {
-            return commit1.timeStamp === commit2.timeStamp;
-          }) === pos;
-        })
-        .map((commit, i, a) => {
-          const commitCopy = Object.assign({}, commit);
-          if (i !== 0 && i !== a.length - 1) {
-            commitCopy.hasPrevious = true;
-            commitCopy.hasNext = true;
-          }
-          if (i === 0) commitCopy.hasNext = true;
-          if (i === a.length - 1) commitCopy.hasPrevious = true;
-          return commitCopy;
-        })
+      githubCommits,
     })
   }
 
-  pull = (user) => {
+  pull = (user, branch) => {
 
     let githubCommits = this.state.githubCommits;
-    if (!this.state.githubCommits.length) return;
-    githubCommits = githubCommits
-      .concat(this.refs[user].state.master)
+    const userBranches = this.refs[user].state.branches;
+
+    console.log('1',branch, userBranches[branch], githubCommits[branch])
+
+    if (!githubCommits[branch].length) return;
+
+    userBranches[branch] = this.mergeAndSortCommits(userBranches[branch], githubCommits[branch]);
+    
+    console.log('2',branch, userBranches[branch], githubCommits[branch])
+
+    this.refs[user].setState({
+      branches: userBranches
+    })
+  }
+
+  mergeAndSortCommits(arr1, arr2) {
+    return arr1
+      .concat(arr2)
       .sort((a, b) => a.timeStamp > b.timeStamp)
       .filter((commit1, pos, a) => {
         return a.findIndex((commit2) => {
@@ -68,14 +74,14 @@ class App extends Component {
           commitCopy.hasPrevious = true;
           commitCopy.hasNext = true;
         }
-        if (i === 0) commitCopy.hasNext = true;
-        if (i === a.length - 1) commitCopy.hasPrevious = true;
+        if (a.length > 1) {
+          if (i === 0)
+            commitCopy.hasNext = true;
+          if (i === a.length - 1)
+            commitCopy.hasPrevious = true;
+        }
         return commitCopy;
-      })
-    
-    this.refs[user].setState({
-      master: githubCommits
-    })
+      });
   }
 
   render() {

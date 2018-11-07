@@ -15,7 +15,7 @@ class Github extends Component {
         <Visualizer
           height="100%"
           width="100%"
-          master={this.props.githubCommits}
+          branches={this.props.githubCommits}
         />
       </div>
     )

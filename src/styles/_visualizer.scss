@@ -1,5 +1,11 @@
 .Visualizer {
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  justify-content: center;
   overflow: scroll;
+
+  .branchName {
+    transform: rotate(-90deg);
+    margin-top: auto; 
+  }
 }

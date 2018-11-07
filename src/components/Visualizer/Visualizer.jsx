@@ -17,10 +17,29 @@ class Visualizer extends Component {
  
 
   render() {
+    const branchOrder = Object.keys(this.props.branches).sort((a, b) => {
+      if (!this.props.branches[a][0] || !this.props.branches[b][0]) {
+        return true;
+      }
+      return this.props.branches[a][0].timeStamp < this.props.branches[b][0].timeStamp;
+    });
     return (
-      <div className="Visualizer" style={this.style}>
+      <div ref="window" className="Visualizer" style={this.style}>
         {
-          this.props.master.map(commit => Commit.render(commit))
+          this.props.branches && (
+            branchOrder.map((branch) => {
+              return (
+                <div style={{ display: "flex" }}>
+                  {
+                    this.props.branches[branch].length ? (
+                      <p className="branchName">{branch}</p>
+                    ) : ''
+                  }
+                  {this.props.branches[branch].map(commit => Commit.render(commit))}
+                </div>
+              )
+            })
+          )  
         }
       </div>
     )

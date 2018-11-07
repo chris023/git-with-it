@@ -2,11 +2,6 @@ import React, { Component } from 'react';
 import '../styles/_terminal.scss';
 
 class Terminal extends Component {
-
-  constructor(props) {
-    super(props);
-    this.branches = ["master"];
-  }
   
   submitCommand = (e) => {
     if (e.key === 'Enter') {
@@ -18,10 +13,12 @@ class Terminal extends Component {
 
       this.refs.gtermPrefix.value += 'gterm > ';
 
-      if (lines.length > 13) {
-        const numToRemove = lines.length - 13;
-        
-      }
+      // this.props.visualizer.refs.window.scrollLeft += Infinity;
+
+      // if (lines.length > 13) {
+      //   const numToRemove = lines.length - 13;
+
+      // }
     }
   }
 
@@ -50,16 +47,22 @@ class Terminal extends Component {
         this.refs.gtermPrefix.value += 'gterm > ';
         break;
       case 'push':
-        this.props.push(this.props.master);
+        this.props.push(this.props.branches[this.props.currentBranch], this.props.currentBranch);
         break;
       case 'pull':
-        this.props.pull('user' + this.props.user[this.props.user.length - 1]);
+        this.props.pull('user' + this.props.user[this.props.user.length - 1], this.props.currentBranch);
         break;
       case 'merge':
         this.merge();
         break;
       case 'checkout':
-        this.checkout();
+        switch (command[2]) {
+          case '-b':
+            !command[3] ? this.commandNotFound() : this.props.createBranch(command[3]);
+            break;
+          default:
+            !command[2] ? this.commandNotFound() : this.props.setCurrentBranch(command[2]);
+        }
         break;
       case undefined:
         this.displayHelp();
@@ -80,6 +83,21 @@ class Terminal extends Component {
   clear() {
     this.refs.gtermInput.value = '';
     this.refs.gtermPrefix.value = '';
+  }
+
+  branchNotFound(name) {
+    this.refs.gtermInput.value += `  no branch '${name}'\n`;
+    this.refs.gtermPrefix.value += '\n\n'
+  }
+
+  switchedToBranch(name) {
+    this.refs.gtermInput.value += `  switched to branch ${name}\n`;
+    this.refs.gtermPrefix.value += '\n\n'
+  }
+
+  alreadyOnBranch(name) {
+    this.refs.gtermInput.value += `  already on ${name}\n`;
+    this.refs.gtermPrefix.value += '\n\n'
   }
 
   displayHelp() {

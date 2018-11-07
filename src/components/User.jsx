@@ -9,25 +9,58 @@ class User extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      master: [],
+      currentBranch: 'master',
+      branchOrder: ['master'],
+      branches: {
+        master: [],
+      }
     }
   }
 
+  createBranch = (name) => {
+    const branches = this.state.branches;
+    const branchOrder = this.state.branchOrder;
+
+    branches[name] = [];
+    branchOrder.unshift(name);
+
+    this.setState({
+      branches,
+      branchOrder,
+    })
+
+    this.setCurrentBranch(name)
+  }
+
+  setCurrentBranch = (name) => {
+    if (!this.state.branches[name]) return this.refs.terminal.branchNotFound(name);
+    if (name === this.state.currentBranch) return this.refs.terminal.alreadyOnBranch(name);
+
+    this.setState({
+      currentBranch: name,
+    })
+
+    this.refs.terminal.switchedToBranch(name);
+  }
+
   commit = () => {
-    let master = this.state.master;
+    let branches = this.state.branches;
+    let currentBranch = branches[this.state.currentBranch];
     
     let hasPrev = true;
-    if (!master.length)
+    if (!currentBranch.length)
       hasPrev = false;
     
     let commit = new Commit(this.props.userName, hasPrev)
-    master.push(commit);
+    currentBranch.push(commit);
 
-    if (master.length > 1)
-      master[master.length - 2].hasNext = true;
+    if (currentBranch.length > 1)
+      currentBranch[currentBranch.length - 2].hasNext = true;
+    
+    branches[this.state.currentBranch] = currentBranch;
 
     this.setState({
-      master,
+      branches,
     })
   }
 
@@ -38,7 +71,8 @@ class User extends Component {
         <Visualizer
           height="100%"
           width="100%"
-          master={ this.state.master }
+          branches={this.state.branches}
+          branchOrder={this.state.branchOrder}
         />
         <Terminal
           ref="terminal"
@@ -46,7 +80,11 @@ class User extends Component {
           push={this.props.push}
           pull={this.props.pull}
           user={this.props.userName}
-          master={this.state.master}
+          branches={this.state.branches}
+          visualizer={this.refs.visualizer}
+          currentBranch={this.state.currentBranch}
+          createBranch={this.createBranch}
+          setCurrentBranch={this.setCurrentBranch}
         />
       </div>
     )
