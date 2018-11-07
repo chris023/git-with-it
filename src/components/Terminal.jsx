@@ -102,14 +102,13 @@ class Terminal extends Component {
 
   displayHelp() {
     const help = `
-help: possible commands:
-  clear
-  git commit
-  git push
-  git pull
-  git checkout
-  git checkout -b newbranch
-  git merge\n\n`;
+possible commands:
+ clear
+ git commit
+ git push
+ git pull
+ git checkout <branchname>
+ git checkout -b <branchname>\n\n`;
     
     this.refs.gtermInput.value += help;
     this.refs.gtermPrefix.value += help.split('\n').map(line => '\n').join('');
